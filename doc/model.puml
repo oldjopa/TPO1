@@ -1,0 +1,72 @@
+@startuml
+
+class Planet {
+    - String name
+    - List<SpaceObject> spaceObjects
+    - List<Cosmodrome> cosmodromes
+    - List<Observatory> observatories
+    + addSpaceObject(spaceObject: SpaceObject): void
+    + addCosmodrome(cosmodrome: Cosmodrome): void
+    + addObservatory(observatory: Observatory): void
+    + notifyObservers(observation: Observation): void
+}
+
+class SpaceObject {
+    - String name
+    - boolean visible
+    + SpaceObject(name: String, visible: boolean)
+    + isVisible(): boolean
+    + setVisible(visible: boolean): void
+}
+
+interface Observer {
+    + notify(observation: Observation): void
+}
+
+class Cosmodrome implements Observer {
+    - String name
+    - String location
+    - ObservationRegistry observationRegistry
+    + Cosmodrome(name: String, location: String)
+    + notify(observation: Observation): void
+    + getObservationRegistry(): ObservationRegistry
+}
+
+class Observatory implements Observer {
+    - String name
+    - String location
+    - ObservationRegistry observationRegistry
+    + Observatory(name: String, location: String)
+    + notify(observation: Observation): void
+    + getObservationRegistry(): ObservationRegistry
+}
+
+class Observation {
+    - String date
+    - String details
+    + Observation(date: String, details: String)
+    + getDate(): String
+    + getDetails(): String
+    + toString(): String
+}
+
+class ObservationRegistry {
+    - List<Observation> observations
+    + addObservation(observation: Observation): void
+    + getObservations(): List<Observation>
+}
+
+class ObservationFactory {
+    + createObservation(date: String, details: String): Observation
+}
+
+Planet "1" -- "*" SpaceObject : contains
+Planet "1" -- "*" Cosmodrome : contains
+Planet "1" -- "*" Observatory : contains
+Planet --> "1..*" Observer : notifies
+Cosmodrome "1" -- "1" ObservationRegistry : has
+Observatory "1" -- "1" ObservationRegistry : has
+ObservationRegistry "1" -- "*" Observation : contains
+ObservationFactory ..> Observation : creates
+
+@enduml
