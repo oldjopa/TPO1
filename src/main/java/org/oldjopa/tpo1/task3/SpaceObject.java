@@ -3,6 +3,8 @@ package org.oldjopa.tpo1.task3;
 import lombok.Getter;
 
 public class SpaceObject {
+
+    @Getter
     private String name;
 
     @Getter
@@ -16,4 +18,5 @@ public class SpaceObject {
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
+
 }

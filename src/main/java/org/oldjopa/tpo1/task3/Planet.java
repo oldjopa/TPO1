@@ -21,6 +21,7 @@ public class Planet {
 
     public void addSpaceObject(SpaceObject spaceObject) {
         this.spaceObjects.add(spaceObject);
+        notifyObservers(spaceObject);
     }
 
     public void addCosmodrome(Cosmodrome cosmodrome) {
@@ -31,12 +32,12 @@ public class Planet {
         this.observatories.add(observatory);
     }
 
-    public void notifyObservers(Observation observation) {
+    private void notifyObservers(SpaceObject spaceObject) {
         for (Cosmodrome cosmodrome : cosmodromes) {
-            cosmodrome.notify(observation);
+            cosmodrome.notify(spaceObject);
         }
         for (Observatory observatory : observatories) {
-            observatory.notify(observation);
+            observatory.notify(spaceObject);
         }
     }
 }

@@ -45,21 +45,18 @@ class Task2Test {
         assertTrue(tree.find(70));
     }
 
-
     @Test
-    void testDeleteLeafNode() {
-        tree.delete(20);
+    void testDeleteNodeWithOneChild() {
         tree.delete(80);
         tree.delete(70);
         assertFalse(tree.find(70));
         assertFalse(tree.find(80));
-        assertFalse(tree.find(20));
     }
 
     @Test
-    void testDeleteNodeWithOneChild() {
-        tree.delete(80);
-        assertFalse(tree.find(80));
+    void testDeleteLeafNode() {
+        tree.delete(20);
+        assertFalse(tree.find(20));
     }
 
     @Test

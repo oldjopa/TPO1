@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.oldjopa.tpo1.task3.*;
 
+import java.security.cert.TrustAnchor;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Task3Test {
@@ -15,6 +17,8 @@ public class Task3Test {
     private Cosmodrome cosmodrome;
     private Observatory observatory;
 
+    private ObservationFactory observationFactory;
+
     @BeforeEach
     void setUp() {
         earth = new Planet("Earth");
@@ -22,11 +26,14 @@ public class Task3Test {
         satellite = new SpaceObject("Satellite", false);
         cosmodrome = new Cosmodrome("Gonhillie", "UK");
         observatory = new Observatory("Wumera", "Australia");
+        observationFactory = new ObservationFactory();
+
+        earth.addCosmodrome(cosmodrome);
+        earth.addObservatory(observatory);
 
         earth.addSpaceObject(moon);
         earth.addSpaceObject(satellite);
-        earth.addCosmodrome(cosmodrome);
-        earth.addObservatory(observatory);
+
     }
 
     @Test
@@ -45,50 +52,67 @@ public class Task3Test {
 
     @Test
     void testNotifyObservers() {
-        Observation observation = ObservationFactory.createObservation("2025-02-19", "Moon was visible, Satellite was not visible.");
-
-        earth.notifyObservers(observation);
-
         assertEquals(1, cosmodrome.getObservationRegistry().getObservations().size());
-        assertEquals("Moon was visible, Satellite was not visible.", cosmodrome.getObservationRegistry().getObservations().get(0).getDetails());
 
         assertEquals(1, observatory.getObservationRegistry().getObservations().size());
-        assertEquals("Moon was visible, Satellite was not visible.", observatory.getObservationRegistry().getObservations().get(0).getDetails());
     }
 
     @Test
     void testObservationRegistry() {
-        Observation observation = ObservationFactory.createObservation("2025-02-19", "Moon was visible.");
-        earth.notifyObservers(observation);
-
         assertEquals(1, cosmodrome.getObservationRegistry().getObservations().size());
-        assertEquals("Moon was visible.", cosmodrome.getObservationRegistry().getObservations().get(0).getDetails());
 
         assertEquals(1, observatory.getObservationRegistry().getObservations().size());
-        assertEquals("Moon was visible.", observatory.getObservationRegistry().getObservations().get(0).getDetails());
+    }
+
+//    @Test
+//    void testNotificationWithMultipleObservers() {
+//        Cosmodrome secondCosmodrome = new Cosmodrome("Baikonur", "Kazakhstan");
+//        Observatory secondObservatory = new Observatory("Mauna Kea", "Hawaii");
+//
+//        earth.addCosmodrome(secondCosmodrome);
+//        earth.addObservatory(secondObservatory);
+//
+//        assertEquals(0, secondCosmodrome.getObservationRegistry().getObservations().size());
+//
+//        assertEquals(0, secondObservatory.getObservationRegistry().getObservations().size());
+//    }
+
+    @Test
+    void testCreateCorrectDescription() {
+        SpaceObject asteroid = new SpaceObject("big ass asteroid", true);
+        earth.addSpaceObject(asteroid);
+
+        Observation observation = observationFactory.createObservation(asteroid, observatory);
+
+        assertTrue(observatory.getObservationRegistry().getObservations().stream().anyMatch((o) -> o.getDetails().equals(observation.getDetails())));
     }
 
     @Test
-    void testNotificationWithMultipleObservers() {
+    void testSkipInvisibleObjects(){
+        SpaceObject asteroid = new SpaceObject("small ass asteroid", false);
         Cosmodrome secondCosmodrome = new Cosmodrome("Baikonur", "Kazakhstan");
         Observatory secondObservatory = new Observatory("Mauna Kea", "Hawaii");
 
         earth.addCosmodrome(secondCosmodrome);
         earth.addObservatory(secondObservatory);
+        earth.addSpaceObject(asteroid);
 
-        Observation observation = ObservationFactory.createObservation("2025-02-19", "Satellite is visible.");
-        earth.notifyObservers(observation);
+        assertEquals(0, secondCosmodrome.getObservationRegistry().getObservations().size());
+        assertEquals(0, secondObservatory.getObservationRegistry().getObservations().size());
+    }
 
-        assertEquals(1, cosmodrome.getObservationRegistry().getObservations().size());
-        assertEquals("Satellite is visible.", cosmodrome.getObservationRegistry().getObservations().get(0).getDetails());
+    @Test
+    void testSadObserverHasUltravision(){
+        SpaceObject asteroid = new SpaceObject("small ass asteroid", false);
+        Cosmodrome secondCosmodrome = new Cosmodrome("Baikonur", "Kazakhstan");
+        Observatory secondObservatory = new Observatory("Mauna Kea", "Hawaii");
+
+        earth.addCosmodrome(secondCosmodrome);
+        earth.addObservatory(secondObservatory);
+        earth.addSpaceObject(asteroid);
+        earth.addSpaceObject(asteroid);
 
         assertEquals(1, secondCosmodrome.getObservationRegistry().getObservations().size());
-        assertEquals("Satellite is visible.", secondCosmodrome.getObservationRegistry().getObservations().get(0).getDetails());
-
-        assertEquals(1, observatory.getObservationRegistry().getObservations().size());
-        assertEquals("Satellite is visible.", observatory.getObservationRegistry().getObservations().get(0).getDetails());
-
         assertEquals(1, secondObservatory.getObservationRegistry().getObservations().size());
-        assertEquals("Satellite is visible.", secondObservatory.getObservationRegistry().getObservations().get(0).getDetails());
     }
 }

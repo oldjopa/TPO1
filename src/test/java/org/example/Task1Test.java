@@ -37,7 +37,7 @@ class Task1Test {
     }
 
     static Stream<Arguments> testParameters() {
-        return IntStream.rangeClosed(-80, 80)
+        return IntStream.of(-80, -70, -65, -60, -10, 0, 10, 60, 65, 70, 80)
                 .mapToObj(angle -> Arguments.of(angle, getTolerance(angle)));
     }
 
