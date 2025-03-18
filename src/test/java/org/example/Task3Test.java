@@ -64,19 +64,6 @@ public class Task3Test {
         assertEquals(1, observatory.getObservationRegistry().getObservations().size());
     }
 
-//    @Test
-//    void testNotificationWithMultipleObservers() {
-//        Cosmodrome secondCosmodrome = new Cosmodrome("Baikonur", "Kazakhstan");
-//        Observatory secondObservatory = new Observatory("Mauna Kea", "Hawaii");
-//
-//        earth.addCosmodrome(secondCosmodrome);
-//        earth.addObservatory(secondObservatory);
-//
-//        assertEquals(0, secondCosmodrome.getObservationRegistry().getObservations().size());
-//
-//        assertEquals(0, secondObservatory.getObservationRegistry().getObservations().size());
-//    }
-
     @Test
     void testCreateCorrectDescription() {
         SpaceObject asteroid = new SpaceObject("big ass asteroid", true);

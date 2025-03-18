@@ -6,7 +6,7 @@ public class Cosmodrome implements Observer {
     private final ObservationFactory observationFactory;
     @Getter
     private String name;
-    private boolean is_sad = false;
+    private boolean isSad = false;
     private String location;
     @Getter
     private ObservationRegistry observationRegistry;
@@ -21,10 +21,10 @@ public class Cosmodrome implements Observer {
 
     @Override
     public void notify(SpaceObject spaceObject) {
-        if (spaceObject.isVisible() || this.is_sad) {
+        if (spaceObject.isVisible() || this.isSad) {
             this.observationRegistry.addObservation(observationFactory.createObservation(spaceObject, this));
         } else {
-            this.is_sad = true;
+            this.isSad = true;
         }
     }
 

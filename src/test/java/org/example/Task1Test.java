@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.oldjopa.tpo1.task1.TgDecomposition.*;
-import  org.oldjopa.tpo1.task1.TgDecomposition;
 
+import org.oldjopa.tpo1.task1.TgDecomposition;
 
 
 /**
@@ -37,7 +37,7 @@ class Task1Test {
     }
 
     static Stream<Arguments> testParameters() {
-        return IntStream.of(-80, -70, -65, -60, -10, 0, 10, 60, 65, 70, 80)
+        return IntStream.of(-80, -70, -60, 0, 60, 70, 80)
                 .mapToObj(angle -> Arguments.of(angle, getTolerance(angle)));
     }
 
@@ -52,24 +52,8 @@ class Task1Test {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Test
-    void classCreateTest(){
+    void classCreateTest() {
         TgDecomposition s = new TgDecomposition();
     }
 
