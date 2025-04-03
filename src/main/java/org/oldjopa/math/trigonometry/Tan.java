@@ -10,7 +10,11 @@ public class Tan implements MathFunction {
 
     @Override
     public double compute(double x, double accuracy) {
-        return sin.compute(x, accuracy) / cos.compute(x, accuracy);
+        double cosValue = cos.compute(x, accuracy);
+//        if (cosValue < accuracy) {
+//            throw new ArithmeticException("Divided by zero");
+//        }
+        return sin.compute(x, accuracy) / cosValue;
     }
 
 }

@@ -10,7 +10,11 @@ public class Cot implements MathFunction {
 
     @Override
     public double compute(double x, double accuracy) {
-        return cos.compute(x, accuracy) / sin.compute(x, accuracy);
+        double sinValue = sin.compute(x, accuracy);
+//        if (Math.abs(sinValue) < accuracy/2){
+//            throw new ArithmeticException("Divided by zero");
+//        }
+        return cos.compute(x, accuracy) / sinValue;
     }
 
 }

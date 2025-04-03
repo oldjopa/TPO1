@@ -10,7 +10,6 @@ import java.io.IOException;
 public class App {
 
     public static void main(String[] args) throws IOException {
-        CsvWriter csvWriter = new CsvWriter();
         Cos cos = new Cos();
 
         Sin sin = new Sin(cos);
@@ -27,73 +26,13 @@ public class App {
 
 
         BigFunction system = new BigFunction(sec, tan, csc, sin, cos, cot, log3, log5, log10, log2);
+        System.out.println(system.compute(0, 0.00000001));
 //        csvWriter.writeToCsv("tan.csv", tan, -10, 10, 0.1);
 //        csvWriter.writeToCsv("cos.csv", cos, -10, 10, 0.1);
 //        csvWriter.writeToCsv("sec.csv", sec, -10, 10, 0.1);
 //        csvWriter.writeToCsv("log.csv", log2, -10, 10, 0.1);
-        csvWriter.writeToCsv("func.csv", system, -10, 10, 0.0001);
+//        csvWriter.writeToCsv("func.csv", system, -10, 10, 0.0001);
 
     }
-//
-//
-//            csvWriter.write(
-//                   sin,
-//                    "Sin.csv",
-//                    BigDecimal.valueOf(-2*Math.PI),
-//                    BigDecimal.valueOf(2*Math.PI),
-//                    BigDecimal.valueOf(0.01),
-//                    5
-//            );
-//            csvWriter.write(
-//                    cos,
-//                    "Cos.csv",
-//                    BigDecimal.valueOf(-2*Math.PI),
-//                    BigDecimal.valueOf(2*Math.PI),
-//                    BigDecimal.valueOf(0.1),
-//                    5
-//            );
-//            csvWriter.write(
-//                    tan,
-//                    "Tan.csv",
-//                    BigDecimal.valueOf(-2*Math.PI),
-//                    BigDecimal.valueOf(0),
-//                    BigDecimal.valueOf(0.1),
-//                    5
-//            );
-//            csvWriter.write(
-//                    sec,
-//                    "Sec.csv",
-//                    BigDecimal.valueOf(-2*Math.PI),
-//                    BigDecimal.valueOf(Math.PI),
-//                    BigDecimal.valueOf(0.01),
-//                    5
-//            );
-//            csvWriter.write(
-//                    csc,
-//                    "Csc.csv",
-//                    BigDecimal.valueOf(-2*Math.PI),
-//                    BigDecimal.valueOf(Math.PI),
-//                    BigDecimal.valueOf(0.01),
-//                    5
-//            );
-//
-//            csvWriter.write(
-//                    ln,
-//                    "Ln.csv",
-//                    BigDecimal.valueOf(0),
-//                    BigDecimal.valueOf(5),
-//                    BigDecimal.valueOf(0.1),
-//                    5
-//            );
-//            csvWriter.writeToCsv("");
-//            csvWriter.write(
-//                    system,
-//                    "Function.csv",
-//                    BigDecimal.valueOf(-3*Math.PI),
-//                    BigDecimal.valueOf(2),
-//                    BigDecimal.valueOf(0.01),
-//                    5
-//            );
-
 
 }

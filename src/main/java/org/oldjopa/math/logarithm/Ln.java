@@ -5,6 +5,7 @@ import org.oldjopa.math.MathFunction;
 public class Ln implements MathFunction {
     @Override
     public double compute(double x, double accuracy) {
+        if (x < accuracy) throw new ArithmeticException("Logarithm from zero");
         final double xx = (1 - x) / (1 + x);
         double acc = 0;
         int pow = 1;
