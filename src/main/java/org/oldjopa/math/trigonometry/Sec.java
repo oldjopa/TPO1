@@ -9,7 +9,11 @@ public class Sec  implements MathFunction {
 
     @Override
     public double compute(double x, double accuracy) {
-        return 1 / cos.compute(x, accuracy);
+        double cosValue = cos.compute(x, accuracy);
+        if (Math.abs(cosValue) < accuracy) {
+            throw new ArithmeticException("Divided by zero");
+        }
+        return 1 / cosValue;
     }
 
 }

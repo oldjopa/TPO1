@@ -13,8 +13,7 @@ import org.oldjopa.math.logarithm.*;
 import org.oldjopa.utils.CalculatedPointTrigonometryDTO;
 import org.oldjopa.utils.CsvReader;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 
@@ -25,16 +24,16 @@ import java.util.List;
 import java.util.stream.Stream;
 
 
-public class TrigonometricFunctionsTest {
+public class TrigonometricFunctionsInvalidValuesTest {
 
-    private static final List<CalculatedPointTrigonometryDTO> valueList = new ArrayList<>();
+    private static final List<CalculatedPointTrigonometryDTO> invalidValueList = new ArrayList<>();
 
-    private static final double accuracy = 0.0000001;
+    private static final double accuracy = 0.00001;
     private static final int roundDigits = 5;
 
     @BeforeAll
     static void buildValueList() {
-        CsvReader.readDataTrigonometry("test_values_trigonometry.csv", valueList);
+        CsvReader.readDataTrigonometry("test_invalid_values_trigonometry.csv", invalidValueList);
     }
 
     @BeforeEach
@@ -44,44 +43,13 @@ public class TrigonometricFunctionsTest {
 
 
     static Stream<Arguments> provideArguments() {
-        return valueList.stream().map(Arguments::of);
+        return invalidValueList.stream().map(Arguments::of);
     }
+
 
     @ParameterizedTest
     @MethodSource("provideArguments")
-    void testFunction1lvl(CalculatedPointTrigonometryDTO pointDTO) {
-        Cos cos = Mockito.mock(Cos.class);
-
-        Sin sin = Mockito.mock(Sin.class);
-        Sec sec = Mockito.mock(Sec.class);
-
-        Csc csc = Mockito.mock(Csc.class);
-
-        Tan tan = Mockito.mock(Tan.class);
-        Cot cot = Mockito.mock(Cot.class);
-
-        Ln ln = new Ln();
-        Log log10 = new Log(10, ln);
-        Log log2 = new Log(2, ln);
-        Log log5 = new Log(5, ln);
-        Log log3 = new Log(3, ln);
-
-        when(cos.compute(pointDTO.getArgument(), accuracy)).thenAnswer(invocation -> pointDTO.getCosValue());
-        when(sin.compute(pointDTO.getArgument(), accuracy)).thenAnswer(invocation -> pointDTO.getSinValue());
-        when(sec.compute(pointDTO.getArgument(), accuracy)).thenAnswer(invocation -> pointDTO.getSecValue());
-        when(csc.compute(pointDTO.getArgument(), accuracy)).thenAnswer(invocation -> pointDTO.getCscValue());
-        when(tan.compute(pointDTO.getArgument(), accuracy)).thenAnswer(invocation -> pointDTO.getTanValue());
-        when(cot.compute(pointDTO.getArgument(), accuracy)).thenAnswer(invocation -> pointDTO.getCotValue());
-
-        BigFunction system = new BigFunction(sec, tan, csc, sin, cos, cot, log3, log5, log10, log2);
-
-        double result = system.compute(pointDTO.getArgument(), accuracy);
-        assertEquals(pointDTO.getTargetValue(), round(result, roundDigits));
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideArguments")
-    void testFunction2lvl(CalculatedPointTrigonometryDTO pointDTO) {
+    void testFunction2lvlInvalidValues(CalculatedPointTrigonometryDTO pointDTO) {
         Cos cos = Mockito.mock(Cos.class);
 
         Sin sin = Mockito.mock(Sin.class);
@@ -103,13 +71,12 @@ public class TrigonometricFunctionsTest {
 
         BigFunction system = new BigFunction(sec, tan, csc, sin, cos, cot, log3, log5, log10, log2);
 
-        double result = system.compute(pointDTO.getArgument(), accuracy);
-        assertEquals(pointDTO.getTargetValue(), round(result, roundDigits));
+        assertThrows(ArithmeticException.class, () -> system.compute(pointDTO.getArgument(), accuracy));
     }
 
     @ParameterizedTest
     @MethodSource("provideArguments")
-    void testFunction3lvl(CalculatedPointTrigonometryDTO pointDTO) {
+    void testFunction3lvlInvalidValues(CalculatedPointTrigonometryDTO pointDTO) {
         Cos cos = Mockito.mock(Cos.class);
 
         Sin sin = new Sin(cos);
@@ -130,13 +97,12 @@ public class TrigonometricFunctionsTest {
 
         BigFunction system = new BigFunction(sec, tan, csc, sin, cos, cot, log3, log5, log10, log2);
 
-        double result = system.compute(pointDTO.getArgument(), accuracy);
-        assertEquals(pointDTO.getTargetValue(), round(result, roundDigits));
+        assertThrows(ArithmeticException.class, () -> system.compute(pointDTO.getArgument(), accuracy));
     }
 
     @ParameterizedTest
     @MethodSource("provideArguments")
-    void testFunction4lvl(CalculatedPointTrigonometryDTO pointDTO) {
+    void testFunction4lvlInvalidValues(CalculatedPointTrigonometryDTO pointDTO) {
         Cos cos = new Cos();
 
         Sin sin = new Sin(cos);
@@ -154,17 +120,7 @@ public class TrigonometricFunctionsTest {
 
         BigFunction system = new BigFunction(sec, tan, csc, sin, cos, cot, log3, log5, log10, log2);
 
-        double result = system.compute(pointDTO.getArgument(), accuracy);
-        assertTrue(isAccurate(pointDTO.getTargetValue(), round(result, roundDigits)));
+        assertThrows(ArithmeticException.class, () -> system.compute(pointDTO.getArgument(), accuracy));
     }
 
-    private static boolean isAccurate(double target, double actual) {
-        return target == actual || Math.abs(Math.abs(target - actual) / target) < (double) roundDigits / 100;
-    }
-
-    private static double round(double value, int places) {
-        return BigDecimal.valueOf(value)
-                .setScale(places, RoundingMode.HALF_UP)
-                .doubleValue();
-    }
 }

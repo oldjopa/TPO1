@@ -26,7 +26,9 @@ public class App {
 
 
         BigFunction system = new BigFunction(sec, tan, csc, sin, cos, cot, log3, log5, log10, log2);
-        System.out.println(system.compute(0, 0.00000001));
+        System.out.println(system.compute(Math.PI/2, 0.00000001));
+        System.out.println(tan.compute(Math.PI/2, 0.00000001));
+
 //        csvWriter.writeToCsv("tan.csv", tan, -10, 10, 0.1);
 //        csvWriter.writeToCsv("cos.csv", cos, -10, 10, 0.1);
 //        csvWriter.writeToCsv("sec.csv", sec, -10, 10, 0.1);

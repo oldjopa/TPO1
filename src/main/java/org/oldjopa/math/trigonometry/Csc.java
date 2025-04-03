@@ -9,6 +9,10 @@ public class Csc implements MathFunction {
 
     @Override
     public double compute(double x, double accuracy) {
-        return 1 / sin.compute(x, accuracy);
+        double sinValue = sin.compute(x, accuracy);
+        if (Math.abs(sinValue) < accuracy){
+            throw new ArithmeticException("Divided by zero");
+        }
+        return 1 / sinValue;
     }
 }
